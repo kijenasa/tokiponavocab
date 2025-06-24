@@ -14,17 +14,16 @@ static void register_language_entry(struct language_entry entry) {
     head_entry->next = NULL;
     head_entry->previous = NULL;
 
-    if(language_entry_list == NULL) {
+    if (language_entry_list == NULL) {
         language_entry_list = head_entry;
     } else {
         struct language_entry *index_entry = language_entry_list;
-        while(index_entry->next != NULL)
+        while (index_entry->next != NULL)
             index_entry = index_entry->next;
 
         index_entry->next = head_entry;
         head_entry->previous = index_entry;
     }
-
 }
 
 int load_language(char *dir) {
@@ -46,6 +45,7 @@ int load_language(char *dir) {
     fclose(fp);
 
     parsed_json = json_tokener_parse(buffer);
+    free(buffer);
 
     int language_len = json_object_array_length(parsed_json);
 
@@ -75,7 +75,20 @@ int load_language(char *dir) {
     return 0;
 }
 
-void unload_language();
+void unload_language() {
+    if(language_entry_list == NULL) {
+        return;
+    } else {
+        struct language_entry *index_entry = language_entry_list;
+        struct language_entry *next_entry;
+        while (index_entry->next != NULL) {
+            next_entry = index_entry->next;
+            free(index_entry);
+            index_entry = next_entry;
+        }
+        language_entry_list = NULL;
+    }
+}
 
 char *get_word(int index);
 char *get_index(int index);
