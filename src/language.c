@@ -12,7 +12,6 @@ static void register_language_entry(struct language_entry entry) {
 
     memcpy(head_entry, &entry, sizeof(struct language_entry));
     head_entry->next = NULL;
-    head_entry->previous = NULL;
 
     if (language_entry_list == NULL) {
         language_entry_list = head_entry;
@@ -22,7 +21,6 @@ static void register_language_entry(struct language_entry entry) {
             index_entry = index_entry->next;
 
         index_entry->next = head_entry;
-        head_entry->previous = index_entry;
     }
 }
 

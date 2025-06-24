@@ -3,7 +3,6 @@
 
 struct language_entry {
     struct language_entry *next;
-    struct language_entry *previous;
     char *word;
     char *definition;
 };
