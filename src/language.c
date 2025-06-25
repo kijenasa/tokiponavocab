@@ -6,23 +6,7 @@
 #include <json-c/json.h>
 
 struct language_entry *language_entry_list;
-
-static void register_language_entry(struct language_entry entry) {
-    struct language_entry *head_entry = malloc(sizeof(struct language_entry));
-
-    memcpy(head_entry, &entry, sizeof(struct language_entry));
-    head_entry->next = NULL;
-
-    if (language_entry_list == NULL) {
-        language_entry_list = head_entry;
-    } else {
-        struct language_entry *index_entry = language_entry_list;
-        while (index_entry->next != NULL)
-            index_entry = index_entry->next;
-
-        index_entry->next = head_entry;
-    }
-}
+int language_entry_list_len;
 
 int load_language(char *dir) {
     FILE *fp;
@@ -45,11 +29,12 @@ int load_language(char *dir) {
     parsed_json = json_tokener_parse(buffer);
     free(buffer);
 
-    int language_len = json_object_array_length(parsed_json);
+    language_entry_list_len = json_object_array_length(parsed_json);
+    language_entry_list = malloc(sizeof(struct language_entry) * language_entry_list_len);
 
     struct language_entry entry;
     struct json_object *json_entry;
-    for(int i = 0; i < language_len; i++) {
+    for(int i = 0; i < language_entry_list_len; i++) {
         struct json_object *json_entry = json_object_array_get_idx(parsed_json, i);
         json_object_object_get_ex(json_entry, "word", &json_word);
         json_object_object_get_ex(json_entry, "definition", &json_definition);
@@ -65,7 +50,7 @@ int load_language(char *dir) {
         entry.definition = malloc(entry_definition_len);
         memcpy(entry.definition, definition, entry_definition_len);
 
-        register_language_entry(entry);
+        language_entry_list[i] = entry;
     }
 
     json_object_put(parsed_json);
@@ -74,18 +59,14 @@ int load_language(char *dir) {
 }
 
 void unload_language() {
-    if(language_entry_list == NULL) {
-        return;
-    } else {
-        struct language_entry *index_entry = language_entry_list;
-        struct language_entry *next_entry;
-        while (index_entry->next != NULL) {
-            next_entry = index_entry->next;
-            free(index_entry);
-            index_entry = next_entry;
-        }
-        language_entry_list = NULL;
+    struct language_entry entry;
+    for(int i = 0; i < language_entry_list_len; i++) {
+        entry = language_entry_list[i];
+        free(entry.word);
+        free(entry.definition);
     }
+    free(language_entry_list);
+    language_entry_list = NULL;
 }
 
 char *get_word(int index);

@@ -8,7 +8,6 @@ enum status {
 };
 
 struct language_entry {
-    struct language_entry *next;
     enum status status;
     char *word;
     char *definition;
