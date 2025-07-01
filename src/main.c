@@ -1,9 +1,25 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "config.h"
 #include "language.h"
 
 int main(int argc, char *argv[]) {
-    load_language(LANGUAGE);
+    char *lang_buf;
+    char *lang_name;
+    int size;
+    if(argc == 1) {
+        lang_name = DEFAULT_LANGUAGE;
+    } else {
+        lang_name = argv[1];
+    }
+
+    size = strlen(LANGUAGE_DIR) + strlen(lang_name) + strlen(".json") + 1;
+    lang_buf = malloc(size);
+    snprintf(lang_buf, size, "%s%s.json", LANGUAGE_DIR, lang_name);
+    printf("Training %s\n", lang_buf);
+
+    load_language(lang_buf);
     unload_language();
 
     return EXIT_SUCCESS;
