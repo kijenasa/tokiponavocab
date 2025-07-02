@@ -3,6 +3,7 @@
 #include <string.h>
 #include "config.h"
 #include "language.h"
+#include "repetition.h"
 
 int main(int argc, char *argv[]) {
     char *lang_buf;
@@ -20,6 +21,9 @@ int main(int argc, char *argv[]) {
     printf("Training %s\n", lang_buf);
 
     load_language(lang_buf);
+
+    init_repitition();
+
     unload_language();
 
     return EXIT_SUCCESS;

@@ -16,4 +16,6 @@ struct language_entry {
 int load_language(char *dir);
 void unload_language();
 
+struct language_entry *get_type(enum status type);
+
 #endif
