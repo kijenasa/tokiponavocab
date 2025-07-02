@@ -69,5 +69,11 @@ void unload_language() {
     language_entry_list = NULL;
 }
 
-char *get_word(int index);
-char *get_index(int index);
+struct language_entry *get_type(enum status type) {
+    for(int i = 0; i < language_entry_list_len; i++) {
+        if(language_entry_list[i].status == type)
+            return &language_entry_list[i];
+    }
+
+    return NULL;
+}
