@@ -14,4 +14,7 @@
 
 #define RELEARN_FREQUENCY 5
 
+/* Interface */
+#define INPUT_LEN 255
+
 #endif

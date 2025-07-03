@@ -7,7 +7,7 @@ int relearn_timer = 0;
 
 void init_repitition() {
     struct language_entry *active_word;
-    for(int i = 0; i > ACTIVE_COUNT; i++) {
+    for(int i = 0; i < ACTIVE_COUNT; i++) {
         active_word = get_type(UNLEARNED);
         active_word->status = LEARNING;
         active_word->index = i;

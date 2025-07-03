@@ -20,4 +20,6 @@ void unload_language();
 
 struct language_entry *get_type(enum status type);
 
+void print_word(struct language_entry *word);
+
 #endif

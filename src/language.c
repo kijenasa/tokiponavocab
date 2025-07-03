@@ -1,4 +1,5 @@
 #include "language.h"
+#define _POSIX_C_SOURCE 200809L
 #include <json-c/json_object.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,7 +35,6 @@ int load_language(char *dir) {
     language_entry_list = malloc(sizeof(struct language_entry) * language_entry_list_len);
 
     struct language_entry entry;
-    struct json_object *json_entry;
     for(int i = 0; i < language_entry_list_len; i++) {
         struct json_object *json_entry = json_object_array_get_idx(parsed_json, i);
         json_object_object_get_ex(json_entry, "word", &json_word);
@@ -43,13 +43,12 @@ int load_language(char *dir) {
         const char *word = json_object_get_string(json_word);
         const char *definition = json_object_get_string(json_definition);
 
-        int entry_word_len = strlen(word);
-        entry.word = malloc(entry_word_len);
-        memcpy(entry.word, word, entry_word_len);
+        entry.word = strdup(word);
+        entry.definition = strdup(definition);
 
-        int entry_definition_len = strlen(definition);
-        entry.definition = malloc(entry_definition_len);
-        memcpy(entry.definition, definition, entry_definition_len);
+        entry.status = UNLEARNED;
+        entry.streak = 0;
+        entry.index = -1;
 
         language_entry_list[i] = entry;
     }
@@ -72,7 +71,7 @@ void unload_language() {
     language_entry_list = NULL;
 }
 
-struct language_entry *get_type(enum status type) {
+struct language_entry *get_type(enum status type) { // BAD, returns NULL when it shouldnt
     int offset = rand();
     int index;
 
@@ -82,5 +81,22 @@ struct language_entry *get_type(enum status type) {
             return &language_entry_list[index];
     }
 
+    puts("NULL");
     return NULL;
+}
+
+void print_word(struct language_entry *word) {
+    printf("Index: %d\nStreak: %d\n", word->index, word->streak);
+    printf("%s\n%s\n", word->word, word->definition);
+    switch(word->status) {
+    case UNLEARNED:
+        puts("UNLEARNED");
+        break;
+    case LEARNING:
+        puts("LEARNING");
+        break;
+    case LEARNED:
+        puts("LEARNED");
+        break;
+    }
 }

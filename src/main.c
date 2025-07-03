@@ -4,6 +4,7 @@
 #include "config.h"
 #include "language.h"
 #include "repetition.h"
+#include "interface.h"
 
 int main(int argc, char *argv[]) {
     char *lang_buf;
@@ -21,9 +22,10 @@ int main(int argc, char *argv[]) {
     printf("Training %s\n", lang_buf);
 
     load_language(lang_buf);
-
     init_repitition();
-
+    open_interface();
+    
+//    close_interface();
     unload_language();
 
     return EXIT_SUCCESS;
