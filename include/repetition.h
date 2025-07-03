@@ -5,7 +5,7 @@
 
 void init_repitition();
 
-struct language_entry next_word();
+struct language_entry *next_word();
 
 void word_correct(struct language_entry *word);
 

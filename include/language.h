@@ -12,6 +12,7 @@ struct language_entry {
     char *word;
     char *definition;
     int streak;
+    int index; // The words index in the active array, -1 it its not in it.
 };
 
 int load_language(char *dir);
