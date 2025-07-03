@@ -11,6 +11,7 @@ struct language_entry {
     enum status status;
     char *word;
     char *definition;
+    int streak;
 };
 
 int load_language(char *dir);

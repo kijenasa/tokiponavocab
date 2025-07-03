@@ -14,3 +14,15 @@ void init_repitition() {
 }
 
 struct language_entry next_word();
+
+void word_correct(struct language_entry *word) {
+    word->streak += 1;
+
+    if(word->streak == 5) {
+        word->status = LEARNED;
+    }
+}
+
+void word_incorrect(struct language_entry *word) {
+    word->streak = 0;
+}

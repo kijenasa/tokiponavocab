@@ -10,4 +10,8 @@
 /* Repetition */
 #define ACTIVE_COUNT 5
 
+#define LEARNED_STREAK 5
+
+#define RELEARN_FREQUENCY 5
+
 #endif
