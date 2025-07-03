@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <json-c/json.h>
+#include <time.h>
 
 struct language_entry *language_entry_list;
 int language_entry_list_len;
@@ -55,6 +56,8 @@ int load_language(char *dir) {
 
     json_object_put(parsed_json);
 
+    srand(time(NULL));
+
     return 0;
 }
 
@@ -70,9 +73,13 @@ void unload_language() {
 }
 
 struct language_entry *get_type(enum status type) {
+    int offset = rand();
+    int index;
+
     for(int i = 0; i < language_entry_list_len; i++) {
-        if(language_entry_list[i].status == type)
-            return &language_entry_list[i];
+        index = (i + offset) % language_entry_list_len;
+        if(language_entry_list[index].status == type)
+            return &language_entry_list[index];
     }
 
     return NULL;
