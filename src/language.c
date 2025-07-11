@@ -68,9 +68,8 @@ void unload_language() {
     language_entry_list = NULL;
 }
 
-struct language_entry *get_type(enum status type) { // BAD, returns NULL when it shouldnt
+struct language_entry *get_type(enum status type) {
     int offset = rand();
-    printf("%d\n", offset);
     int index;
 
     for(int i = 0; i < language_entry_list_len; i++) {

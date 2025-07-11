@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 #include "config.h"
 #include "language.h"
 #include "repetition.h"
@@ -23,7 +22,7 @@ int main(int argc, char *argv[]) {
     snprintf(lang_buf, size, "%s%s.json", LANGUAGE_DIR, lang_name);
     printf("Training %s\n", lang_buf);
 
-    srand(getpid() * time(NULL));
+    srand(time(NULL));
 
     load_language(lang_buf);
     init_repitition();
