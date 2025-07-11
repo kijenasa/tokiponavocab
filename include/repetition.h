@@ -11,6 +11,4 @@ void word_correct(struct language_entry *word);
 
 void word_incorrect(struct language_entry *word);
 
-// TODO: ways to save progress to a file
-
 #endif
