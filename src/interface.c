@@ -2,6 +2,7 @@
 #include "config.h"
 #include "language.h"
 #include "repetition.h"
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -18,6 +19,7 @@ void open_interface() {
         fgets(input, INPUT_LEN, stdin);
         input[strcspn(input, "\n")] = '\0';
 
+        system("clear");
         if(strcmp(input, word->word) == 0) {
             word_correct(word);
             puts("Correct!");
@@ -25,7 +27,6 @@ void open_interface() {
             word_incorrect(word);
             printf("Incorrect! Expected: %s\n", word->word);
         }
+
     }
 }
-
-void close_interface();

@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
     init_repitition();
     open_interface();
     
-//    close_interface();
     unload_language();
 
     return EXIT_SUCCESS;
