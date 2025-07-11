@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <sys/time.h>
 #include "config.h"
 #include "language.h"
 #include "repetition.h"
@@ -22,7 +23,9 @@ int main(int argc, char *argv[]) {
     snprintf(lang_buf, size, "%s%s.json", LANGUAGE_DIR, lang_name);
     printf("Training %s\n", lang_buf);
 
-    srand(time(NULL));
+    struct timeval t;
+    gettimeofday(&t, NULL);
+    srand(t.tv_usec * t.tv_sec);
 
     load_language(lang_buf);
     init_repitition();
