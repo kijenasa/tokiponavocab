@@ -6,40 +6,32 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install dependencies (Linux)
-        if: runner.os == 'Linux'
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential libjson-c-dev make
+          sudo apt-get install -y build-essential libjson-c-dev mingw-w64
 
-      - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          choco install make mingw cmake --no-progress
-          git clone https://github.com/json-c/json-c.git
-          cd json-c
-          mkdir build
-          cd build
-          cmake .. -G "MinGW Makefiles"
-          cmake --build . --config Release
-          cmake --install .
-
-      - name: Build using Makefile
+      - name: Build Linux binary
         run: make
 
-      - name: Upload artifact
+      - name: Build Windows binary (cross-compile)
+        run: |
+          make \
+            CC=x86_64-w64-mingw32-gcc \
+            LDFLAGS="-ljson-c" \
+            EXE_SUFFIX=.exe \
+            TARGET=trainer
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: trainer-${{ runner.os }}
+          name: binaries
           path: |
             trainer
             trainer.exe
