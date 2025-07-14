@@ -24,7 +24,14 @@ jobs:
       - name: Install dependencies (Windows)
         if: runner.os == 'Windows'
         run: |
-          choco install make mingw json-c --no-progress
+          choco install make mingw cmake --no-progress
+          git clone https://github.com/json-c/json-c.git
+          cd json-c
+          mkdir build
+          cd build
+          cmake .. -G "MinGW Makefiles"
+          cmake --build . --config Release
+          cmake --install .
 
       - name: Build using Makefile
         run: make
